@@ -22,3 +22,17 @@ class RandomBlur(object):
 
 
 
+
+class RandomFlipWithLabel(object):
+    def __init__(self, p):
+        self.p = p
+
+    def __call__(self, img, label):
+        assert(isinstance(img, Image.Image))
+        if np.random.rand() >= self.p:
+            return img, label
+
+        img = img.transpose(Image.FLIP_LEFT_RIGHT)
+        label = -label  # 这里简单给了一个对label取反的示例
+        return img, label
+
