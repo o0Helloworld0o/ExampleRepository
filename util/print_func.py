@@ -44,7 +44,7 @@ def pp_verts(x, prefix=None):
     elif isinstance(x, torch.Tensor):
         pp_tensor(x, prefix)
     for c in range(3):
-        min_val, max_val = x.min(), x.max()
+        min_val, max_val = x[:, c].min(), x[:, c].max()
         span = max_val - min_val
         print('c={}, [{:.3f}, {:.3f}], span={:.3f}'.format(c, min_val, max_val, span))
 

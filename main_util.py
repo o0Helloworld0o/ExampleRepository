@@ -11,7 +11,7 @@ from torchvision import datasets
 
 
 
-switch = 3
+switch = 0
 
 
 
