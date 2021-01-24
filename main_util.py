@@ -5,17 +5,20 @@ from PIL import Image
 import torch
 from torchvision import datasets
 
-from util.print_func import pp, pp_verts
-from util.dataset_aug import RandomBlur, RandomFlipWithLabel
 
 
 
 
 
-switch = 1
+
+switch = 3
+
+
 
 
 if switch == 0:
+    from util.print_func import pp, pp_verts
+
     a = np.random.rand(3, 4)
     pp(a)
 
@@ -29,7 +32,11 @@ if switch == 0:
 
 
 
+
+
 elif switch == 1:
+    from util.dataset_aug import RandomBlur, RandomFlipWithLabel
+
     img_dir = 'E:/Dataset_Collection/FFHQ'
 
     tfm = RandomBlur(0.5)
@@ -42,7 +49,6 @@ elif switch == 1:
         ax.imshow(X)
         ax.axis('off')
     plt.show()
-
 
 
 
@@ -65,3 +71,47 @@ elif switch == 1:
 
 
 
+
+
+elif switch == 3:
+    from util.loss_func import WeightedMSELoss
+
+    out = torch.rand(77, 13)
+    target = torch.rand(77, 13)
+
+
+    w = np.ones(13)
+    w[7] = 1.5
+    criterion = WeightedMSELoss(w)
+    loss = criterion(out, target)
+    print('【pytorch】')
+    print('loss =', loss.item())
+
+
+
+    # 验证
+    def numpy_mse(y_pred, y_true, w):
+        d = y_pred - y_true
+        d = d ** 2
+        loss = d * w
+        loss = loss.mean()
+        return loss
+
+    loss = numpy_mse(out.numpy(), target.numpy(), w)
+    print('\n【numpy】')
+    print('loss =', loss)
+
+
+
+
+
+elif switch == 4:
+    from util.loss_func import FixedMSELoss
+
+    out = torch.rand(77, 56)
+    target = torch.rand(77, 56)
+
+    criterion = FixedMSELoss()
+    loss = criterion(out, target)
+    print('【pytorch】')
+    print('loss =', loss.item())
